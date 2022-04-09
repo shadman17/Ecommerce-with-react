@@ -8,6 +8,7 @@ import bg from "../../assets/bg.jpg";
 import Grid from "@mui/material/Grid";
 import Navbar from "../Navbar/Navbar";
 
+
 const styles = {
   card: {
     margin: "auto",
@@ -19,7 +20,6 @@ const styles = {
 const Header = () => {
   return (
     <div>
-      <Container>
         <Card style={styles.card}>
           <Box sx={{ position: "relative" }}>
             <CardMedia component="img" image={bg} />
@@ -44,7 +44,7 @@ const Header = () => {
             </Grid>
           </Box>
         </Card>
-      </Container>
+        
     </div>
   );
 };

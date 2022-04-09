@@ -14,7 +14,6 @@ import LoginIcon from "@mui/icons-material/Login";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { NavLink } from "react-router-dom";
-import { PagesRounded } from "@mui/icons-material";
 
 const pages = ["Home", "Products", "Contact", "Cart", "Login", "Register"];
 
@@ -32,7 +31,7 @@ const Navbar = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ background: color }}>
+      <AppBar position="fixed" sx={{ background: color }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -74,17 +73,21 @@ const Navbar = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                <MenuItem key={pages[0]} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" color="black">
-                    {pages[0]}
-                  </Typography>
-                </MenuItem>
+                <NavLink to="/" style={{ textDecoration: "none" }}>
+                  <MenuItem key={pages[0]} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center" color="black">
+                      {pages[0]}
+                    </Typography>
+                  </MenuItem>
+                </NavLink>
 
-                <MenuItem key={pages[1]} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" color="black">
-                    {pages[1]}
-                  </Typography>
-                </MenuItem>
+                <NavLink to="/products" style={{ textDecoration: "none" }}>
+                  <MenuItem key={pages[1]} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center" color="black">
+                      {pages[1]}
+                    </Typography>
+                  </MenuItem>
+                </NavLink>
 
                 <MenuItem key={pages[2]} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center" color="black">
@@ -121,35 +124,39 @@ const Navbar = () => {
               Fake Commerce
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              <Button
-                variant="outlined"
-                key={pages[0]}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  mx: 1,
-                  my: 2,
-                  color: "black",
-                  display: "block",
-                  border: "2px solid black",
-                }}
-              >
-                {pages[0]}
-              </Button>
+              <NavLink to="/" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="outlined"
+                  key={pages[0]}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    mx: 1,
+                    my: 2,
+                    color: "black",
+                    display: "block",
+                    border: "2px solid black",
+                  }}
+                >
+                  {pages[0]}
+                </Button>
+              </NavLink>
 
-              <Button
-                variant="outlined"
-                key={pages[1]}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  mx: 1,
-                  color: "black",
-                  display: "block",
-                  border: "2px solid black",
-                }}
-              >
-                {pages[1]}
-              </Button>
+              <NavLink to="/products" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="outlined"
+                  key={pages[1]}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    my: 2,
+                    mx: 1,
+                    color: "black",
+                    display: "block",
+                    border: "2px solid black",
+                  }}
+                >
+                  {pages[1]}
+                </Button>
+              </NavLink>
 
               <Button
                 variant="outlined"
