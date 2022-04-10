@@ -12,7 +12,7 @@ export const productsList = async () => {
 
 export const ProductDetail = async (id) => {
     try {
-        const res = await fetch(`${BASE_URL}/products/id`)
+        const res = await fetch(`${BASE_URL}/products/${id}`)
         const data = await res.json();
         return data
     } catch (error) {

@@ -7,9 +7,10 @@ import Skeleton from '@mui/material/Skeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getproductsList } from '../../redux/action/productAction/productAction';
 import { Link } from 'react-router-dom';
-import { BASE_URL, getProductByCategory } from '../../utils/api';
+import { BASE_URL } from '../../utils/api';
 import "./products.css"
 import Categories from '../../components/Categories/Categories';
+import Navbar from '../../components/Navbar/Navbar';
 
 
 const styles = {
@@ -94,7 +95,7 @@ const Products = () => {
                 <div className="card-body text-center">
                   <h5 className="card-title">{item.title.slice(0, 20)}</h5>
                   <p className="lead">${item.price}</p>
-                  <Link to={`/products/${item.id}`} style={{ textDecoration: 'none' }}>
+                  <Link to={`/products/${item._id}`} style={{ textDecoration: 'none' }}>
                     <Button variant='outlined' sx={{ color: "black", display: "block", border: "2px black solid", margin: "auto" }}>
                       View Details
                     </Button>
@@ -112,7 +113,7 @@ const Products = () => {
               <div className="card-body text-center">
                 <h5 className="card-title">{item.title.slice(0, 20)}</h5>
                 <p className="lead">${item.price}</p>
-                <Link to={`/products/${item.id}`} style={{ textDecoration: 'none' }}>
+                <Link to={`/products/${item._id}`} style={{ textDecoration: 'none' }}>
                   <Button variant='outlined' sx={{ color: "black", display: "block", border: "2px black solid", margin: "auto" }}>
                     View Details
                   </Button>
@@ -131,6 +132,8 @@ const Products = () => {
   }
 
   return (
+    <div>
+    <Navbar/>
     <div className='product-list ' style={styles.productHeader}>
       <Categories getCategory={getCategory} getAllProducts={getAllProducts}/>
       
@@ -144,6 +147,7 @@ const Products = () => {
         <ShowProducts />
 
       </Container>
+    </div>
     </div>
   )
 }
