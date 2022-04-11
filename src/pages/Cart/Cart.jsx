@@ -112,7 +112,7 @@ const Cart = () => {
 
     const ShowButton = () => {
         return (
-            <div>
+            <div className="row justify-content-center">
                 <button onClick = {()=>checkoutCart(user)} className="btn btn-outline-dark my-dark w-25 mb-5">
                     <p className="fw-bold m-0">PROCEED TO CHECKOUT</p>
                 </button>
