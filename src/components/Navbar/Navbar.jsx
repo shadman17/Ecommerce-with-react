@@ -16,7 +16,7 @@ import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogoutIcon from "@mui/icons-material/Logout";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const pages = [
     "Home",
@@ -29,17 +29,19 @@ const pages = [
 ];
 
 const Navbar = () => {
-    const cartItem = useSelector((store) => store.cart);
     const { user } = useSelector((store) => store.userStore);
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem("persist:userlogin");
-        window.location.reload();
-    }
+        
+        window.location.reload() && navigate("/");
+    };
 
-    console.log(user);
+    const profilepage = () => {
+        navigate("/profile")
+    };
 
     const color = grey["A100"];
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -149,7 +151,7 @@ const Navbar = () => {
                                     </Typography>
                                 </MenuItem>
 
-                                {user.message ? (
+                                {user.message === "Logged in Successfully" ? (
                                     <div>
                                         <NavLink
                                             to="/"
@@ -302,19 +304,8 @@ const Navbar = () => {
                         >
                             {user.message ? (
                                 <div>
-                                    <Button
-                                        variant="outlined"
-                                        sx={{
-                                            mx: 1,
-                                            color: "black",
-                                            border: "2px black solid",
-                                        }}
-                                        startIcon={<ShoppingCartCheckoutIcon />}
-                                    >
-                                        Cart ({cartItem.length})
-                                    </Button>
                                     <NavLink
-                                        to="/"
+                                        to="/cart"
                                         style={{ textDecoration: "none" }}
                                     >
                                         <Button
@@ -324,24 +315,39 @@ const Navbar = () => {
                                                 color: "black",
                                                 border: "2px black solid",
                                             }}
-                                            startIcon={<LogoutIcon />}
+                                            startIcon={
+                                                <ShoppingCartCheckoutIcon />
+                                            }
                                         >
-                                            Profile
+                                            Cart
                                         </Button>
                                     </NavLink>
 
-                                        <Button onClick = {handleLogout}
-                                            variant="outlined"
-                                            sx={{
-                                                mx: 1,
-                                                color: "black",
-                                                border: "2px black solid",
-                                            }}
-                                            startIcon={<LogoutIcon />}
-                                        >
-                                            Logout
-                                        </Button>
-                                    
+                                    <Button
+                                        onClick={profilepage}
+                                        variant="outlined"
+                                        sx={{
+                                            mx: 1,
+                                            color: "black",
+                                            border: "2px black solid",
+                                        }}
+                                        startIcon={<LogoutIcon />}
+                                    >
+                                        Profile
+                                    </Button>
+
+                                    <Button
+                                        onClick={handleLogout}
+                                        variant="outlined"
+                                        sx={{
+                                            mx: 1,
+                                            color: "black",
+                                            border: "2px black solid",
+                                        }}
+                                        startIcon={<LogoutIcon />}
+                                    >
+                                        Logout
+                                    </Button>
                                 </div>
                             ) : (
                                 <div>

@@ -4,3 +4,4 @@ export const userLogin = (userInfo) => ({
     type: ActionType.setToken,
     payload: userInfo
 })
+

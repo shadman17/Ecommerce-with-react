@@ -6,18 +6,22 @@ import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
-import { BASE_URL } from "../../utils/api";
+import { BASE_URL, setCart } from "../../utils/api";
 import "./SelectedProduct.css";
-import { addItem, delItem } from "../../redux/action/cartAction/cartAction";
 import Navbar from "../../components/Navbar/Navbar";
-
+import { useNavigate } from "react-router-dom";
 
 const SelectedProduct = () => {
+    // const cartItem = useSelector((store) => store.cart);
     const { product } = useSelector((store) => store.product);
+
+    const [cardBtn, setCartBtn] = useState("ADD TO CART");
+
+    const { user } = useSelector((store) => store.userStore);
+
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { id } = useParams();
-    
-    const [cardBtn, setCartBtn] = useState('ADD TO CART')
 
     useEffect(() => {
         const getProduct = async () => {
@@ -27,18 +31,20 @@ const SelectedProduct = () => {
         getProduct();
     }, [id, dispatch]);
 
-    const handleCart = (product) => {
-        if (cardBtn === 'ADD TO CART'){
-            dispatch(addItem(product))
-            setCartBtn('REMOVE FROM CART')
-
+    const addToCart = (product) => {
+        if (user.message && user.message === "Logged in Successfully") {
+            if (cardBtn === "ADD TO CART") {
+                setCart(product._id, user);
+                setCartBtn("PRODUCT ADDED TO CART");
+            }
+        } else {
+            navigate("/signin");
         }
+    };
 
-        else {
-            dispatch(delItem(product))
-            setCartBtn('ADD TO CART')
-        }
-    }
+    const handleCart = () => {
+        navigate("/cart");
+    };
 
     const Loading = () => {
         return (
@@ -108,13 +114,26 @@ const SelectedProduct = () => {
                             <h2 className="my-2">${product.price}</h2>
                             <p className="lead ">{product.description}</p>
 
-                            <button
-                                onClick={() => handleCart(product)}
-                                className="btn btn-outline-dark my-dark"
-                                
-                            >
-                                <p className="fw-bold m-0">{cardBtn}</p>
-                            </button>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <button
+                                        onClick={() => addToCart(product)}
+                                        className="btn btn-outline-dark dark"
+                                    >
+                                        <p className="fw-bold m-0">{cardBtn}</p>
+                                    </button>
+                                </div>
+                                <div className="col-md-4">
+                                    <button
+                                        onClick={handleCart}
+                                        className="btn btn-outline-dark dark"
+                                    >
+                                        <p className="fw-bold m-0">
+                                            GO TO CART
+                                        </p>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,7 +143,7 @@ const SelectedProduct = () => {
 
     return (
         <div>
-        <Navbar/>
+            <Navbar />
             {Object.keys(product).length === 0 ? <Loading /> : <ShowProduct />}
         </div>
     );

@@ -133,7 +133,10 @@ const Products = () => {
 
   return (
     <div>
-    <Navbar/>
+    {
+      window.location.href === `http://localhost:3000/products` ? <Navbar/> : null
+    }
+    
     <div className='product-list ' style={styles.productHeader}>
       <Categories getCategory={getCategory} getAllProducts={getAllProducts}/>
       

@@ -5,10 +5,14 @@ const cartItem = [];
 const cartReducer = (state = cartItem, action) => {
     switch (action.type) {
         case ActionType.addItem:
-            return [...state, action.payload];
+            const exist = state.find((x) => x._id === action.payload._id);
+            if (exist) return state;
+            else {
+                return [...state, action.payload];
+            }
 
         case ActionType.delItem:
-            return state = state.filter(x => x._id !== action.payload._id)
+            return (state = state.filter((x) => x._id !== action.payload._id));
 
         default:
             return state;

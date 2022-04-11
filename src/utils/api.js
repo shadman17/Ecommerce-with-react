@@ -40,3 +40,89 @@ export const getProductByCategory = async (id) => {
     }
 }
 
+export const setCart = async (id, user) => {
+                    
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `bearer ${user.userInfo.token}` },
+        body: JSON.stringify({
+            product: {
+                id: id,
+                quantity: 1
+            }
+        }),
+    };
+
+    await fetch(`${BASE_URL}/cart`, requestOptions)
+    // .then(res=>res.json())
+    // .then(res=>console.log(res));
+}
+
+export const getCart = async (user) => {
+
+    try{
+        const requestOptions = {
+            method: "GET",
+            headers: { "Content-Type": "application/json", "Authorization": `bearer ${user.userInfo.token}` },
+    
+        }
+                        
+        const response = await fetch(`${BASE_URL}/cart`, requestOptions)
+        const data = await response.json()
+        return data
+    }
+    catch(e){
+        console.log(e);  
+    }
+
+    
+}
+
+export const getUserDetails = async (user) => {
+    try{
+        const requestOptions = {
+            method: "GET",
+            headers: { "Content-Type": "application/json", "Authorization": `bearer ${user.userInfo.token}` },
+    
+        }
+                        
+        const response = await fetch(`${BASE_URL}/my-detail`, requestOptions)
+        const data = await response.json()
+        return data
+    }
+    catch(e){
+        console.log(e);  
+    }
+}
+
+export const setUserDetails = async (user) => {
+    try{
+        const requestOptions = {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json", "Authorization": `bearer ${user.userInfo.token}` },
+    
+        }
+                        
+        const response = await fetch(`${BASE_URL}/my-detail`, requestOptions)
+        const data = await response.json()
+        return data
+    }
+    catch(e){
+        console.log(e);  
+    }
+}
+
+export const checkout = async (user) =>{
+    try {
+        const requestOptions = {
+            method: "GET",
+            headers: { "Content-Type": "application/json", "Authorization": `bearer ${user.userInfo.token}` },
+    
+        }
+        const res = await fetch(`${BASE_URL}/order/checkout`, requestOptions)
+        const data = await res.json();
+        return data
+    } catch (error) {
+        console.log(error);        
+    }
+}
