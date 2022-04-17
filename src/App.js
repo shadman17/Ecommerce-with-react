@@ -13,6 +13,10 @@ import UpdateProfile from "./pages/UpdateProfile/UpdateProfile";
 import { useSelector } from "react-redux";
 import Profile from "./pages/Profile/Profile";
 import Checkout from "./pages/Checkout/Checkout";
+import ProductDashboard from "./pages/Dashboard/ProductDashboard/ProductDashboard"
+import EditProduct from "./pages/Dashboard/ProductDashboard/EditProduct";
+import CreateProduct from "./pages/Dashboard/ProductDashboard/CreateProduct";
+
 
 function App() {
     const { user } = useSelector((store) => store.userStore);
@@ -29,7 +33,7 @@ function App() {
                     path="/products/:id"
                     element={<SelectedProduct />}
                 />
-                {user.message === "Logged in Successfully" ? (
+                {user.message === "Logged in Successfully" && user.userInfo.role === "user" ? (
                     <Route exact path="/cart" element={<Cart />} />
                 ) : (
                     <Route
@@ -38,7 +42,7 @@ function App() {
                         element={<Navigate to="/404"></Navigate>}
                     />
                 )}
-                {user.message === "Logged in Successfully" ? (
+                {user.message === "Logged in Successfully" && user.userInfo.role === "user" ? (
                     <Route exact path="/profile" element={<Profile />} />
                 ) : (
                     <Route
@@ -47,8 +51,12 @@ function App() {
                         element={<Navigate to="/404"></Navigate>}
                     />
                 )}
-                {user.message === "Logged in Successfully" ? (
-                    <Route exact path="/update-profile" element={<UpdateProfile />} />
+                {user.message === "Logged in Successfully" && user.userInfo.role === "user" ? (
+                    <Route
+                        exact
+                        path="/update-profile"
+                        element={<UpdateProfile />}
+                    />
                 ) : (
                     <Route
                         exact
@@ -56,7 +64,7 @@ function App() {
                         element={<Navigate to="/404"></Navigate>}
                     />
                 )}
-                {user.message === "Logged in Successfully" ? (
+                {user.message === "Logged in Successfully" && user.userInfo.role === "user" ? (
                     <Route exact path="/checkout" element={<Checkout />} />
                 ) : (
                     <Route
@@ -68,6 +76,27 @@ function App() {
                 {user.message === "Logged in Successfully" &&
                 user.userInfo.role === "admin" ? (
                     <Route exact path="/dashboard" element={<Dashboard />} />
+                ) : (
+                    <Route
+                        exact
+                        path="*"
+                        element={<Navigate to="/404"></Navigate>}
+                    />
+                )}
+
+                {user.message === "Logged in Successfully" &&
+                user.userInfo.role === "admin" ? (
+                    <Route exact path="/dashboard/editProduct/:id" element={<EditProduct />} />
+                ) : (
+                    <Route
+                        exact
+                        path="*"
+                        element={<Navigate to="/404"></Navigate>}
+                    />
+                )}
+                {user.message === "Logged in Successfully" &&
+                user.userInfo.role === "admin" ? (
+                    <Route exact path="/dashboard/createProduct" element={<CreateProduct />} />
                 ) : (
                     <Route
                         exact

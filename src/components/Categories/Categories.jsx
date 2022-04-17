@@ -65,7 +65,7 @@ const Categories = ({getCategory, getAllProducts}) => {
                 <Button onClick={getAllProducts} style={{ textDecoration: 'none', color: "black", }}>
                   <div className="card-body">
 
-                    <h6 className="card-text">All Products</h6>
+                    <h6 className="card-text">See All Products</h6>
                   </div>
                 </Button>
               </div>

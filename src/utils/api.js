@@ -40,7 +40,7 @@ export const getProductByCategory = async (id) => {
     }
 }
 
-export const setCart = async (id, user) => {
+export const addCart = async (id, user) => {
                     
     const requestOptions = {
         method: "POST",
@@ -49,6 +49,24 @@ export const setCart = async (id, user) => {
             product: {
                 id: id,
                 quantity: 1
+            }
+        }),
+    };
+
+    await fetch(`${BASE_URL}/cart`, requestOptions)
+    // .then(res=>res.json())
+    // .then(res=>console.log(res));
+}
+
+export const removeCart = async (id, user) => {
+                    
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `bearer ${user.userInfo.token}` },
+        body: JSON.stringify({
+            product: {
+                id: id,
+                quantity: 0
             }
         }),
     };

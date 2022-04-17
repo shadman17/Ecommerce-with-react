@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import { Link } from "react-router-dom";
 import Stack from "@mui/material/Stack";
-import { BASE_URL, setCart } from "../../utils/api";
+import { BASE_URL, addCart, removeCart } from "../../utils/api";
 import "./SelectedProduct.css";
 import Navbar from "../../components/Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
@@ -15,13 +15,15 @@ const SelectedProduct = () => {
     // const cartItem = useSelector((store) => store.cart);
     const { product } = useSelector((store) => store.product);
 
-    const [cardBtn, setCartBtn] = useState("ADD TO CART");
+    const [cartBtn, setCartBtn] = useState("ADD TO CART");
 
     const { user } = useSelector((store) => store.userStore);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { id } = useParams();
+
+    const [addedToCart, setAddedToCart] = useState(true)
 
     useEffect(() => {
         const getProduct = async () => {
@@ -31,17 +33,24 @@ const SelectedProduct = () => {
         getProduct();
     }, [id, dispatch]);
 
-    const addToCart = (product) => {
+    const addOrRemoveToCart = (product) => {
+        console.log(product)
         if (user.message && user.message === "Logged in Successfully") {
-            if (cardBtn === "ADD TO CART") {
-                setCart(product._id, user);
-                setCartBtn("PRODUCT ADDED TO CART");
+            if (cartBtn === "ADD TO CART") {
+                addCart(product._id, user);
+                setCartBtn("REMOVE FROM CART");
+            }
+            else{
+                removeCart(product._id, user);
+                setCartBtn("ADD TO CART");
+
             }
         } else {
             navigate("/signin");
         }
     };
 
+    
     const handleCart = () => {
         navigate("/cart");
     };
@@ -117,10 +126,10 @@ const SelectedProduct = () => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <button
-                                        onClick={() => addToCart(product)}
+                                        onClick={() => addOrRemoveToCart(product)}
                                         className="btn btn-outline-dark dark"
                                     >
-                                        <p className="fw-bold m-0">{cardBtn}</p>
+                                        <p className="fw-bold m-0">{cartBtn}</p>
                                     </button>
                                 </div>
                                 <div className="col-md-4">

@@ -11,7 +11,7 @@ import { BASE_URL } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userLogin } from "../../redux/action/userAction/userAction";
-import Navbar from "../../components/Navbar/Navbar"
+import Navbar from "../../components/Navbar/Navbar";
 
 function Copyright(props) {
     return (
@@ -37,16 +37,17 @@ export default function SignIn() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+
         if(!user.message){
             setUserMessage("")
         }
 
         else if(user.message === "Logged in Successfully"){
-            if(user.userInfo.role==="admin"){
-                navigate("/dashboard")
-            }
-            else if(user.userInfo.role==="user"){
+            if(user.userInfo.role==="user"){
                 navigate("/products")
+            }
+            else {
+                navigate('/dashboard')
             }
             
         }
@@ -54,7 +55,7 @@ export default function SignIn() {
         else{
             setUserMessage("Please Enter Correct Username or password")
         }
-        
+
     }, [user.message, navigate]);
 
     const handleSubmit = (event) => {
@@ -84,72 +85,70 @@ export default function SignIn() {
 
     return (
         <div>
-            <Navbar/>
-        
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
-            >
-                <Typography component="h1" variant="h5">
-                    Sign in
-                </Typography>
+            <Navbar />
 
-                {
-                    userMessage ? userMessage : null
-                }
-
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
                 <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{ mt: 1 }}
+                    sx={{
+                        marginTop: 8,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
                 >
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2, backgroundColor: "#000" }}
+                    {userMessage ? userMessage : null}
+
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        noValidate
+                        sx={{ mt: 1 }}
                     >
-                        Sign In
-                    </Button>
-                    <Grid container justifyContent="flex-end">
-                        <Grid item>
-                            <Link to={`/signup`}>
-                                {"Don't have an account? Sign Up"}
-                            </Link>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                        />
+
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, backgroundColor: "#000" }}
+                        >
+                            Sign In
+                        </Button>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item>
+                                <Link to={`/signup`}>
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
-            </Box>
-            <Copyright sx={{ mt: 8, mb: 4 }} />
-        </Container>
+                <Copyright sx={{ mt: 8, mb: 4 }} />
+            </Container>
         </div>
     );
 }

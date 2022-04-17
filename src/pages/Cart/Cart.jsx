@@ -5,27 +5,90 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { BASE_URL, getCart, checkout } from "../../utils/api";
 
-
 const Cart = () => {
     const { user } = useSelector((store) => store.userStore);
     const [items, setItems] = useState({});
-    const navigate = useNavigate()
+    const [updateValue, setUpdateValue] = useState(true)
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getCartItems = async () => {
             const response = await getCart(user);
+            console.log(response);
             setItems(response);
         };
 
         getCartItems();
-    }, [user]);
-
+    }, [user, updateValue]);
 
     const checkoutCart = async (user) => {
-        const v = await checkout(user)
-        console.log(v)
-        navigate("/checkout")
-    }
+        await checkout(user);
+        navigate("/profile");
+    };
+
+
+    const addOne = async (item, user) => {
+        
+        setUpdateValue(!updateValue)
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `bearer ${user.userInfo.token}`,
+            },
+            body: JSON.stringify({
+                product: {
+                    id: item.productId._id,
+                    quantity: item.quantity+1,
+                },
+            }),
+        };
+        await fetch(`${BASE_URL}/cart`, requestOptions)
+            .then(res=>res.json())
+            .then(res=>console.log(res));               
+        
+    };
+
+
+    const deleteOne = async (item, user) => {
+        setUpdateValue(!updateValue)
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `bearer ${user.userInfo.token}`,
+            },
+            body: JSON.stringify({
+                product: {
+                    id: item.productId._id,
+                    quantity: item.quantity-1,
+                },
+            }),
+        };
+        await fetch(`${BASE_URL}/cart`, requestOptions)
+ 
+    };
+
+    const deleteall = async (item, user) => {
+
+        setUpdateValue(!updateValue)
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `bearer ${user.userInfo.token}`,
+            },
+            body: JSON.stringify({
+                product: {
+                    id: item.productId._id,
+                    quantity: 0
+                },
+            }),
+        };
+        await fetch(`${BASE_URL}/cart`, requestOptions)
+            .then(res=>res.json())
+            .then(res=>console.log(res));   
+    };
 
     const Loading = () => {
         return (
@@ -74,12 +137,28 @@ const Cart = () => {
                                                         ) + "....."}
                                                     </h5>
                                                     <p className="lead fw-bold">
-                                                        $
-                                                        {
-                                                            cartItem.productId
-                                                                .price
-                                                        }
+                                                        {`${cartItem.quantity} x $${cartItem.productId.price} `}
                                                     </p>
+                                                </div>
+                                                <div className="col-md-4">
+                                                    <button
+                                                        onClick={() => addOne(cartItem, user)}
+                                                        className="btn btn-success mx-4"
+                                                    >
+                                                        +
+                                                    </button>
+                                                    <button
+                                                        onClick={() => deleteOne(cartItem, user)}
+                                                        className="btn btn-dark px-3"
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <button
+                                                        onClick={() => deleteall(cartItem, user)}
+                                                        className="btn btn-danger mx-4"
+                                                    >
+                                                        X
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -113,8 +192,11 @@ const Cart = () => {
     const ShowButton = () => {
         return (
             <div className="row justify-content-center">
-                <button onClick = {()=>checkoutCart(user)} className="btn btn-outline-dark my-dark w-25 mb-5">
-                    <p className="fw-bold m-0">PROCEED TO CHECKOUT</p>
+                <button
+                    onClick={() => checkoutCart(user)}
+                    className="btn btn-outline-dark my-dark w-25 mb-5"
+                >
+                    <p className="fw-bold m-0">PLACE ORDER</p>
                 </button>
             </div>
         );

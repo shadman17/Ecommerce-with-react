@@ -35,12 +35,12 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("persist:userlogin");
-        
+
         window.location.reload() && navigate("/");
     };
 
     const profilepage = () => {
-        navigate("/profile")
+        navigate("/profile");
     };
 
     const color = grey["A100"];
@@ -302,7 +302,7 @@ const Navbar = () => {
                                 display: { xs: "none", md: "flex" },
                             }}
                         >
-                            {user.message ? (
+                            {user.message && user?.userInfo?.role === "user" ? (
                                 <div>
                                     <NavLink
                                         to="/cart"
@@ -323,18 +323,22 @@ const Navbar = () => {
                                         </Button>
                                     </NavLink>
 
-                                    <Button
-                                        onClick={profilepage}
-                                        variant="outlined"
-                                        sx={{
-                                            mx: 1,
-                                            color: "black",
-                                            border: "2px black solid",
-                                        }}
-                                        startIcon={<LogoutIcon />}
+                                    <NavLink
+                                        to="/profile"
+                                        style={{ textDecoration: "none" }}
                                     >
-                                        Profile
-                                    </Button>
+                                        <Button
+                                            variant="outlined"
+                                            sx={{
+                                                mx: 1,
+                                                color: "black",
+                                                border: "2px black solid",
+                                            }}
+                                            startIcon={<LogoutIcon />}
+                                        >
+                                            Profile
+                                        </Button>
+                                    </NavLink>
 
                                     <Button
                                         onClick={handleLogout}
