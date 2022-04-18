@@ -13,60 +13,60 @@ const ListItems = ({setproductClicked, setcategoryClicked, setuserClicked, setor
 
     const navigate = useNavigate()
 
-    const handleProducts = () => {
-        setproductClicked(true)
-        setcategoryClicked(false)
-        setuserClicked(false)
-        setorderClicked(false)
+    const handleProducts = (bool) => {
+        setproductClicked(bool)
+        setcategoryClicked(!bool)
+        setuserClicked(!bool)
+        setorderClicked(!bool)
 
     }
 
-    const handleCategories = () => {
-        setproductClicked(false)
-        setcategoryClicked(true)
-        setuserClicked(false)
-        setorderClicked(false)
+    const handleCategories = (bool) => {
+        setproductClicked(!bool)
+        setcategoryClicked(bool)
+        setuserClicked(!bool)
+        setorderClicked(!bool)
     }
 
-    const handleUsers =  () => {
-        setproductClicked(false)
-        setcategoryClicked(false)
-        setuserClicked(true)
-        setorderClicked(false)
+    const handleUsers =  (bool) => {
+        setproductClicked(!bool)
+        setcategoryClicked(!bool)
+        setuserClicked(bool)
+        setorderClicked(!bool)
     }
 
-    const handleOrders =  () =>{
-        setproductClicked(false)
-        setcategoryClicked(false)
-        setuserClicked(false)
-        setorderClicked(true)
+    const handleOrders =  (bool) =>{
+        setproductClicked(!bool)
+        setcategoryClicked(!bool)
+        setuserClicked(!bool)
+        setorderClicked(bool)
     }
 
 
     return (
         <div>
-            <ListItemButton onClick={handleProducts}>
+            <ListItemButton onClick={()=>handleProducts(true)}>
                 <ListItemIcon>
                     <InventoryIcon />
                 </ListItemIcon>
                 <ListItemText primary="Products" />
             </ListItemButton>
 
-            <ListItemButton onClick={handleProducts}>
+            <ListItemButton onClick={()=>handleCategories(true)}>
                 <ListItemIcon>
                     <CategoryIcon />
                 </ListItemIcon>
                 <ListItemText primary="Categories" />
             </ListItemButton>
 
-            <ListItemButton onClick={handleProducts}>
+            <ListItemButton onClick={()=>handleUsers(true)}>
                 <ListItemIcon>
                     <PeopleIcon />
                 </ListItemIcon>
                 <ListItemText primary="Users" />
             </ListItemButton>
 
-            <ListItemButton onClick={handleProducts}>
+            <ListItemButton onClick={()=>handleOrders(true)}>
                 <ListItemIcon>
                     <ShoppingCartIcon />
                 </ListItemIcon>

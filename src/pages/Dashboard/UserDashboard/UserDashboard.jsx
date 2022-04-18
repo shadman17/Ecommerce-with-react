@@ -11,56 +11,57 @@ import { useSelector, useDispatch } from "react-redux";
 import { getproductsList } from "../../../redux/action/productAction/productAction";
 import { BASE_URL } from "../../../utils/api";
 import { Link } from "react-router-dom";
-// import Dashboard from "../Dashboard";
 
-const ProductDashboard = () => {
+const UserDashboard = () => {
     const { user } = useSelector((store) => store.userStore);
-
     const [loading, setLoading] = useState(false);
-    const { products } = useSelector((store) => store.productsList);
-    const dispatch = useDispatch();
+    const [userList, setUserList] = useState([])
 
     useEffect(() => {
-        const getProducts = async () => {
-            setLoading(true);
-            dispatch(getproductsList());
-            setLoading(false);
-        };
+        const getUsers = async () => {
+            const requestOptions = {
+                method: "GET",
+                headers:{
+                    Authorization: `bearer ${user.userInfo.token}`
+                }
+            }
+            const response = await fetch(`${BASE_URL}/user/`, requestOptions)
+            const result = await response.json()
+            setUserList(result)
+            console.log(result)
+        }
 
-        getProducts();
-    }, [dispatch]);
-    
-    const deleteProduct = (id) => {
-        const deleteProducts = async () => {
+        getUsers()
+
+    }, [user.userInfo.token]);
+
+    const deleteUser = (id) => {
+        const deleteUsers = async () => {
             const requestOptions = {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `bearer ${user.userInfo.token}`,
                 },
-
             };
 
-            await fetch(`${BASE_URL}/products/${id}`, requestOptions)
-                .then((res) => res.json())
-                .then((res) => console.log(res));
+            await fetch(`${BASE_URL}/user/${id}`, requestOptions)
 
-            window.location.reload()
+            window.location.reload();
         };
 
-        deleteProducts();
-
-    }
+        deleteUsers();
+    };
 
     const Loading = () => {
         <h1>Loading....</h1>;
     };
 
-    const ShowProduct = () => {
+    const ShowUser = () => {
         return (
             <div>
                 <Link
-                    to={`/dashboard/createProduct`}
+                    to={`/dashboard/createUser`}
                     style={{ textDecoration: "none" }}
                 >
                     <Button
@@ -73,40 +74,43 @@ const ProductDashboard = () => {
                             width: "200px",
                         }}
                     >
-                        Create A New Product
+                        Create A New User
                     </Button>
                 </Link>
 
                 <Table size="small">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Product ID</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Category</TableCell>
-                            <TableCell>Price</TableCell>
-                            <TableCell>Description</TableCell>
+                            <TableCell>User ID</TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>Username</TableCell>
+                            <TableCell>Phone</TableCell>
+                            <TableCell>Address</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {products.map((product) => (
-                            <TableRow key={product._id}>
+                        {userList.map((user) => (
+                            <TableRow key={user._id}>
                                 <TableCell>
                                     <Link
-                                        to={`/dashboard/editProduct/${product._id}`}
+                                        to={`/dashboard/editUser/${user._id}`}
                                         style={{ textDecoration: "none" }}
                                     >
-                                        {product._id}
+                                        {user._id}
                                     </Link>
                                 </TableCell>
 
-                                <TableCell>{product.title}</TableCell>
-                                <TableCell>{product.category.name}</TableCell>
-                                <TableCell>{product.price}</TableCell>
-                                <TableCell>{product.description}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.username}</TableCell>
+                                <TableCell>{user.phone}</TableCell>
+                                <TableCell>{`${user.address.number}, ${user.address.street} ${user.address.city} ${user.address.zipcode}`}</TableCell>
 
                                 <TableCell>
-                                    <Button onClick={()=>deleteProduct(product._id)}
+                                    <Button
+                                        onClick={() =>
+                                            deleteUser(user._id)
+                                        }
                                         type="submit"
                                         fullWidth
                                         variant="contained"
@@ -127,7 +131,7 @@ const ProductDashboard = () => {
         );
     };
 
-    return <div>{loading ? <Loading /> : <ShowProduct />}</div>;
+    return <div>{loading ? <Loading /> : <ShowUser />}</div>;
 };
 
-export default ProductDashboard;
+export default UserDashboard;

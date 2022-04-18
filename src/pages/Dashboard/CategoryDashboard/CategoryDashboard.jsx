@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+
     Table,
     TableBody,
     TableCell,
@@ -8,30 +9,31 @@ import {
     Button,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { getproductsList } from "../../../redux/action/productAction/productAction";
+import { getCategoriesList } from "../../../redux/action/categoryAction/categoryAction"
+
 import { BASE_URL } from "../../../utils/api";
 import { Link } from "react-router-dom";
 // import Dashboard from "../Dashboard";
 
-const ProductDashboard = () => {
+const CategoryDashboard = () => {
     const { user } = useSelector((store) => store.userStore);
 
     const [loading, setLoading] = useState(false);
-    const { products } = useSelector((store) => store.productsList);
+    const { categories } = useSelector((store) => store.categoriesList);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const getProducts = async () => {
+        const getCategories = async () => {
             setLoading(true);
-            dispatch(getproductsList());
+            dispatch(getCategoriesList());
             setLoading(false);
         };
 
-        getProducts();
+        getCategories();
     }, [dispatch]);
-    
-    const deleteProduct = (id) => {
-        const deleteProducts = async () => {
+
+    const deleteCategory = (id) => {
+        const deleteCategories = async () => {
             const requestOptions = {
                 method: "DELETE",
                 headers: {
@@ -41,14 +43,14 @@ const ProductDashboard = () => {
 
             };
 
-            await fetch(`${BASE_URL}/products/${id}`, requestOptions)
+            await fetch(`${BASE_URL}/category/${id}`, requestOptions)
                 .then((res) => res.json())
                 .then((res) => console.log(res));
 
             window.location.reload()
         };
 
-        deleteProducts();
+        deleteCategories();
 
     }
 
@@ -56,11 +58,11 @@ const ProductDashboard = () => {
         <h1>Loading....</h1>;
     };
 
-    const ShowProduct = () => {
+    const ShowCategory = () => {
         return (
             <div>
                 <Link
-                    to={`/dashboard/createProduct`}
+                    to={`/dashboard/createCategory`}
                     style={{ textDecoration: "none" }}
                 >
                     <Button
@@ -73,40 +75,37 @@ const ProductDashboard = () => {
                             width: "200px",
                         }}
                     >
-                        Create A New Product
+                        Create A New Category
                     </Button>
                 </Link>
 
                 <Table size="small">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Product ID</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Category</TableCell>
-                            <TableCell>Price</TableCell>
-                            <TableCell>Description</TableCell>
+                            <TableCell>Category ID</TableCell>
+                            <TableCell>Category Name</TableCell>
+                            <TableCell>Category Description</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {products.map((product) => (
-                            <TableRow key={product._id}>
+                        {categories.map((category) => (
+                            <TableRow key={category._id}>
                                 <TableCell>
                                     <Link
-                                        to={`/dashboard/editProduct/${product._id}`}
+                                        to={`/dashboard/editCategory/${category._id}`}
                                         style={{ textDecoration: "none" }}
                                     >
-                                        {product._id}
+                                        {category._id}
                                     </Link>
                                 </TableCell>
 
-                                <TableCell>{product.title}</TableCell>
-                                <TableCell>{product.category.name}</TableCell>
-                                <TableCell>{product.price}</TableCell>
-                                <TableCell>{product.description}</TableCell>
+                                <TableCell>{category.name}</TableCell>
+                                <TableCell>{category.description}</TableCell>
 
                                 <TableCell>
-                                    <Button onClick={()=>deleteProduct(product._id)}
+                                    <Button
+                                        onClick={() => deleteCategory(category._id)}
                                         type="submit"
                                         fullWidth
                                         variant="contained"
@@ -127,7 +126,7 @@ const ProductDashboard = () => {
         );
     };
 
-    return <div>{loading ? <Loading /> : <ShowProduct />}</div>;
+    return <div>{loading ? <Loading /> : <ShowCategory />}</div>;
 };
 
-export default ProductDashboard;
+export default CategoryDashboard;

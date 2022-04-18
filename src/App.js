@@ -13,10 +13,12 @@ import UpdateProfile from "./pages/UpdateProfile/UpdateProfile";
 import { useSelector } from "react-redux";
 import Profile from "./pages/Profile/Profile";
 import Checkout from "./pages/Checkout/Checkout";
-import ProductDashboard from "./pages/Dashboard/ProductDashboard/ProductDashboard"
 import EditProduct from "./pages/Dashboard/ProductDashboard/EditProduct";
 import CreateProduct from "./pages/Dashboard/ProductDashboard/CreateProduct";
-
+import CreateCategory from "./pages/Dashboard/CategoryDashboard/CreateCategory";
+import EditCategory from "./pages/Dashboard/CategoryDashboard/EditCategory";
+import CreateUser from "./pages/Dashboard/UserDashboard/CreateUser";
+import EditUser from "./pages/Dashboard/UserDashboard/EditUser";
 
 function App() {
     const { user } = useSelector((store) => store.userStore);
@@ -74,7 +76,7 @@ function App() {
                     />
                 )}
                 {user.message === "Logged in Successfully" &&
-                user.userInfo.role === "admin" ? (
+                    user.userInfo.role === "admin" ? (
                     <Route exact path="/dashboard" element={<Dashboard />} />
                 ) : (
                     <Route
@@ -85,7 +87,7 @@ function App() {
                 )}
 
                 {user.message === "Logged in Successfully" &&
-                user.userInfo.role === "admin" ? (
+                    user.userInfo.role === "admin" ? (
                     <Route exact path="/dashboard/editProduct/:id" element={<EditProduct />} />
                 ) : (
                     <Route
@@ -95,8 +97,48 @@ function App() {
                     />
                 )}
                 {user.message === "Logged in Successfully" &&
-                user.userInfo.role === "admin" ? (
+                    user.userInfo.role === "admin" ? (
                     <Route exact path="/dashboard/createProduct" element={<CreateProduct />} />
+                ) : (
+                    <Route
+                        exact
+                        path="*"
+                        element={<Navigate to="/404"></Navigate>}
+                    />
+                )}
+                {user.message === "Logged in Successfully" &&
+                    user.userInfo.role === "admin" ? (
+                    <Route exact path="/dashboard/createCategory" element={<CreateCategory />} />
+                ) : (
+                    <Route
+                        exact
+                        path="*"
+                        element={<Navigate to="/404"></Navigate>}
+                    />
+                )}
+                {user.message === "Logged in Successfully" &&
+                    user.userInfo.role === "admin" ? (
+                    <Route exact path="/dashboard/editCategory/:id" element={<EditCategory />} />
+                ) : (
+                    <Route
+                        exact
+                        path="*"
+                        element={<Navigate to="/404"></Navigate>}
+                    />
+                )}
+                {user.message === "Logged in Successfully" &&
+                    user.userInfo.role === "admin" ? (
+                    <Route exact path="/dashboard/createUser" element={<CreateUser />} />
+                ) : (
+                    <Route
+                        exact
+                        path="*"
+                        element={<Navigate to="/404"></Navigate>}
+                    />
+                )}
+                {user.message === "Logged in Successfully" &&
+                    user.userInfo.role === "admin" ? (
+                    <Route exact path="/dashboard/editUser/:id" element={<EditUser/>} />
                 ) : (
                     <Route
                         exact
