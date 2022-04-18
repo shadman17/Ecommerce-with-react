@@ -36,7 +36,7 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem("persist:userlogin");
 
-        window.location.reload() && navigate("/");
+        window.location.reload() 
     };
 
     const profilepage = () => {

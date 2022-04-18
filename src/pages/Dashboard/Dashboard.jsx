@@ -6,21 +6,20 @@ import Box from "@mui/material/Box";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItems from "./ListItems";
 import ProductDashboard from "./ProductDashboard/ProductDashboard";
 import CategoryDashboard from "./CategoryDashboard/CategoryDashboard";
 import UserDashboard from "./UserDashboard/UserDashboard";
-
+import { useNavigate } from "react-router-dom";
 
 // import { mainListItems } from "./ListItems";
 
@@ -73,11 +72,18 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function DashboardContent() {
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(true);
     const [productClicked, setproductClicked] = React.useState(true);
     const [categoryClicked, setcategoryClicked] = React.useState(false);
     const [userClicked, setuserClicked] = React.useState(false);
     const [orderClicked, setorderClicked] = React.useState(false);
+
+    const logout = () => {
+        localStorage.removeItem("persist:userlogin");
+        navigate("/signin");
+        window.location.reload();
+    };
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -114,11 +120,9 @@ function DashboardContent() {
                         >
                             Dashboard
                         </Typography>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+                        <Button onClick={logout} color="inherit">
+                            Logout
+                        </Button>
                     </Toolbar>
                 </AppBar>
                 <Drawer variant="permanent" open={open}>
@@ -146,7 +150,6 @@ function DashboardContent() {
                 </Drawer>
                 <Box
                     component="main"
-                    
                     sx={{
                         backgroundColor: (theme) =>
                             theme.palette.mode === "light"
@@ -171,7 +174,6 @@ function DashboardContent() {
                                     {productClicked && <ProductDashboard />}
                                     {categoryClicked && <CategoryDashboard />}
                                     {userClicked && <UserDashboard />}
-
                                 </Paper>
                             </Grid>
                         </Grid>

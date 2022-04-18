@@ -37,26 +37,18 @@ export default function SignIn() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-
-        if(!user.message){
-            setUserMessage("")
-        }
-
-        else if(user.message === "Logged in Successfully"){
-            if(user.userInfo.role==="user"){
-                navigate("/products")
+        if (!user.message) {
+            setUserMessage("");
+        } else if (user.message === "Logged in Successfully") {
+            if (user.userInfo.role === "user") {
+                navigate("/");
+            } else {
+                navigate("/dashboard");
             }
-            else {
-                navigate('/dashboard')
-            }
-            
+        } else {
+            setUserMessage("Please Enter Correct Username or password");
         }
-
-        else{
-            setUserMessage("Please Enter Correct Username or password")
-        }
-
-    }, [user.message, navigate]);
+    }, [user.message, navigate, user?.userInfo?.role]);
 
     const handleSubmit = (event) => {
         event.preventDefault();

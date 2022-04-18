@@ -18,10 +18,6 @@ const CreateUser = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
-    const [number, setNumber] = useState("");
-    const [street, setStreet] = useState("");
-    const [city, setCity] = useState("");
-    const [zipcode, setZipcode] = useState("");
     const [role, setRole] = useState("");
 
     const { user } = useSelector((store) => store.userStore);
@@ -35,10 +31,6 @@ const CreateUser = () => {
             password,
             phone,
             role,
-            number,
-            street,
-            city,
-            zipcode,
             user
         ) => {
             const requestOptions = {
@@ -48,17 +40,6 @@ const CreateUser = () => {
                     Authorization: `bearer ${user.userInfo.token}`,
                 },
                 body: JSON.stringify({
-                    address: {
-                        geolocation: {
-                            lat: "0",
-                            long: "0",
-                        },
-                        city: city,
-                        street: street,
-                        number: parseInt(number),
-                        zipcode: zipcode,
-                    },
-
                     role: role,
                     email: email,
                     username: username,
@@ -80,10 +61,6 @@ const CreateUser = () => {
             password,
             phone,
             role,
-            number,
-            street,
-            city,
-            zipcode,
             user
         );
         navigate("/dashboard");
@@ -162,44 +139,6 @@ const CreateUser = () => {
                             name="role"
                         />
 
-                        <TextField
-                            value={number || ""}
-                            margin="normal"
-                            fullWidth
-                            id="number"
-                            label="House No"
-                            onChange={(e) => setNumber(e.target.value)}
-                            name="number"
-                        />
-
-                        <TextField
-                            value={street || ""}
-                            margin="normal"
-                            fullWidth
-                            id="street"
-                            label="Street"
-                            onChange={(e) => setStreet(e.target.value)}
-                            name="street"
-                        />
-
-                        <TextField
-                            value={city || ""}
-                            margin="normal"
-                            fullWidth
-                            id="city"
-                            onChange={(e) => setCity(e.target.value)}
-                            label="City"
-                            name="city"
-                        />
-                        <TextField
-                            value={zipcode || ""}
-                            margin="normal"
-                            fullWidth
-                            id="zipcode"
-                            onChange={(e) => setZipcode(e.target.value)}
-                            label="Zipcode"
-                            name="zipcode"
-                        />
                         <Button
                             onClick={handleSubmit}
                             type="submit"

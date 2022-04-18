@@ -15,24 +15,23 @@ import { Link } from "react-router-dom";
 const UserDashboard = () => {
     const { user } = useSelector((store) => store.userStore);
     const [loading, setLoading] = useState(false);
-    const [userList, setUserList] = useState([])
+    const [userList, setUserList] = useState([]);
 
     useEffect(() => {
         const getUsers = async () => {
             const requestOptions = {
                 method: "GET",
-                headers:{
-                    Authorization: `bearer ${user.userInfo.token}`
-                }
-            }
-            const response = await fetch(`${BASE_URL}/user/`, requestOptions)
-            const result = await response.json()
-            setUserList(result)
-            console.log(result)
-        }
+                headers: {
+                    Authorization: `bearer ${user.userInfo.token}`,
+                },
+            };
+            const response = await fetch(`${BASE_URL}/user/`, requestOptions);
+            const result = await response.json();
+            setUserList(result);
+            console.log(result);
+        };
 
-        getUsers()
-
+        getUsers();
     }, [user.userInfo.token]);
 
     const deleteUser = (id) => {
@@ -45,12 +44,11 @@ const UserDashboard = () => {
                 },
             };
 
-            await fetch(`${BASE_URL}/user/${id}`, requestOptions)
-
-            window.location.reload();
+            await fetch(`${BASE_URL}/user/${id}`, requestOptions);
         };
 
         deleteUsers();
+        window.location.reload()
     };
 
     const Loading = () => {
@@ -84,8 +82,8 @@ const UserDashboard = () => {
                             <TableCell>User ID</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell>Username</TableCell>
+                            <TableCell>Role</TableCell>
                             <TableCell>Phone</TableCell>
-                            <TableCell>Address</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>
@@ -103,14 +101,13 @@ const UserDashboard = () => {
 
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.username}</TableCell>
+                                <TableCell>{user.role}</TableCell>
+
                                 <TableCell>{user.phone}</TableCell>
-                                <TableCell>{`${user.address.number}, ${user.address.street} ${user.address.city} ${user.address.zipcode}`}</TableCell>
 
                                 <TableCell>
                                     <Button
-                                        onClick={() =>
-                                            deleteUser(user._id)
-                                        }
+                                        onClick={() => deleteUser(user._id)}
                                         type="submit"
                                         fullWidth
                                         variant="contained"

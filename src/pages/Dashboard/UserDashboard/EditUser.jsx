@@ -17,10 +17,7 @@ const EditUser = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [phone, setPhone] = useState("");
-    const [number, setNumber] = useState("");
-    const [street, setStreet] = useState("");
-    const [city, setCity] = useState("");
-    const [zipcode, setZipcode] = useState("");
+    const [role, setRole] = useState("");
 
     const { user } = useSelector((store) => store.userStore);
 
@@ -42,15 +39,11 @@ const EditUser = () => {
                 requestOptions
             );
             const result = await response.json();
-            console.log(result)
+            console.log(result);
             setEmail(result.email);
             setUsername(result.username);
             setPhone(result.phone);
-            setNumber(result.address.number);
-            setStreet(result.address.street);
-            setCity(result.address.city);
-            setZipcode(result.address.zipcode);
-    
+            setRole(result.role);
         };
 
         getUserDetails();
@@ -62,14 +55,11 @@ const EditUser = () => {
             username,
             password,
             phone,
-            number,
-            street,
-            city,
-            zipcode,
+            role,
             user
         ) => {
             const requestOptions = {
-                method: "POST",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `bearer ${user.userInfo.token}`,
@@ -79,29 +69,14 @@ const EditUser = () => {
                     username: username,
                     password: password,
                     phone: phone,
-                    address: {
-                        number: parseInt(number),
-                        street: street,
-                        city: city,
-                        zipcode: zipcode,
-                    },
+                    role: role,
                 }),
             };
 
-            await fetch(`${BASE_URL}/user`, requestOptions);
+            await fetch(`${BASE_URL}/user/${id}`, requestOptions);
         };
 
-        createUsers(
-            email,
-            username,
-            password,
-            phone,
-            number,
-            street,
-            city,
-            zipcode,
-            user
-        );
+        createUsers(email, username, password, phone, role, user);
         navigate("/dashboard");
     };
 
@@ -169,43 +144,16 @@ const EditUser = () => {
                         />
 
                         <TextField
-                            value={number || ""}
+                            value={role || ""}
                             margin="normal"
                             fullWidth
-                            id="number"
-                            label="House No"
-                            onChange={(e) => setNumber(e.target.value)}
-                            name="number"
+                            id="role"
+                            label="Role"
+                            onChange={(e) => setRole(e.target.value)}
+                            name="role"
                         />
 
-                        <TextField
-                            value={street || ""}
-                            margin="normal"
-                            fullWidth
-                            id="street"
-                            onChange={(e) => setStreet(e.target.value)}
-                            label="Street No"
-                            name="street"
-                        />
-                        <TextField
-                            value={city || ""}
-                            margin="normal"
-                            fullWidth
-                            id="city"
-                            onChange={(e) => setCity(e.target.value)}
-                            label="City"
-                            name="city"
-                        />
-                        <TextField
-                            value={zipcode || ""}
-                            margin="normal"
-                            fullWidth
-                            id="zipcode"
-                            onChange={(e) => setZipcode(e.target.value)}
-                            label="Zipcode"
-                            name="zipcode"
-                        />
-
+                        
                         <Button
                             onClick={handleSubmit}
                             type="submit"
