@@ -7,6 +7,11 @@ import {
     TableHead,
     TableRow,
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { getCategoriesList } from "../../../redux/action/categoryAction/categoryAction"
@@ -16,6 +21,9 @@ import { Link } from "react-router-dom";
 // import Dashboard from "../Dashboard";
 
 const CategoryDashboard = () => {
+    const [deletedId, setDeletedId] = useState()
+    const [open, setOpen] = useState(false);
+
     const { user } = useSelector((store) => store.userStore);
 
     const [loading, setLoading] = useState(false);
@@ -53,6 +61,14 @@ const CategoryDashboard = () => {
         deleteCategories();
 
     }
+    const handleClickOpen = (id) => {
+        setDeletedId(id)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const Loading = () => {
         <h1>Loading....</h1>;
@@ -105,7 +121,7 @@ const CategoryDashboard = () => {
 
                                 <TableCell>
                                     <Button
-                                        onClick={() => deleteCategory(category._id)}
+                                        onClick={() => handleClickOpen(category._id)}
                                         type="submit"
                                         fullWidth
                                         variant="contained"
@@ -122,6 +138,26 @@ const CategoryDashboard = () => {
                         ))}
                     </TableBody>
                 </Table>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                // TransitionComponent={Transition}
+                >
+                    <DialogTitle>{"Remove Category?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure to delete this category?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => deleteCategory(deletedId)}>Yes</Button>
+                        <Button onClick={handleClose} autoFocus>
+                            No
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     };

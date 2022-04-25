@@ -35,12 +35,8 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("persist:userlogin");
-
+        navigate('/signin')
         window.location.reload() 
-    };
-
-    const profilepage = () => {
-        navigate("/profile");
     };
 
     const color = grey["A100"];

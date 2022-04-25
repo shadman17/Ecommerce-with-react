@@ -6,6 +6,12 @@ import {
     TableHead,
     TableRow,
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Slide
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { getproductsList } from "../../../redux/action/productAction/productAction";
@@ -13,7 +19,14 @@ import { BASE_URL } from "../../../utils/api";
 import { Link } from "react-router-dom";
 // import Dashboard from "../Dashboard";
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+
 const ProductDashboard = () => {
+    const [deletedId, setDeletedId] = useState()
+    const [open, setOpen] = useState(false);
     const { user } = useSelector((store) => store.userStore);
 
     const [loading, setLoading] = useState(false);
@@ -29,7 +42,7 @@ const ProductDashboard = () => {
 
         getProducts();
     }, [dispatch]);
-    
+
     const deleteProduct = (id) => {
         const deleteProducts = async () => {
             const requestOptions = {
@@ -51,6 +64,15 @@ const ProductDashboard = () => {
         deleteProducts();
 
     }
+
+    const handleClickOpen = (id) => {
+        setDeletedId(id)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const Loading = () => {
         <h1>Loading....</h1>;
@@ -106,7 +128,7 @@ const ProductDashboard = () => {
                                 <TableCell>{product.description}</TableCell>
 
                                 <TableCell>
-                                    <Button onClick={()=>deleteProduct(product._id)}
+                                    <Button onClick={()=>handleClickOpen(product._id)}
                                         type="submit"
                                         fullWidth
                                         variant="contained"
@@ -118,11 +140,32 @@ const ProductDashboard = () => {
                                     >
                                         DELETE
                                     </Button>{" "}
+
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                // TransitionComponent={Transition}
+                >
+                    <DialogTitle>{"Remove Product?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure to delete this product?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={()=>deleteProduct(deletedId)}>Yes</Button>
+                        <Button onClick={handleClose} autoFocus>
+                            No
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     };

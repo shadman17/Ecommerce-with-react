@@ -20,6 +20,7 @@ import ProductDashboard from "./ProductDashboard/ProductDashboard";
 import CategoryDashboard from "./CategoryDashboard/CategoryDashboard";
 import UserDashboard from "./UserDashboard/UserDashboard";
 import { useNavigate } from "react-router-dom";
+import OrderDashboard from "./OrderDashboard/OrderDashboard";
 
 // import { mainListItems } from "./ListItems";
 
@@ -174,6 +175,7 @@ function DashboardContent() {
                                     {productClicked && <ProductDashboard />}
                                     {categoryClicked && <CategoryDashboard />}
                                     {userClicked && <UserDashboard />}
+                                    {orderClicked && <OrderDashboard/>}
                                 </Paper>
                             </Grid>
                         </Grid>

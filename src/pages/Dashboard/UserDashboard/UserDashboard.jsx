@@ -6,6 +6,11 @@ import {
     TableHead,
     TableRow,
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { getproductsList } from "../../../redux/action/productAction/productAction";
@@ -13,6 +18,8 @@ import { BASE_URL } from "../../../utils/api";
 import { Link } from "react-router-dom";
 
 const UserDashboard = () => {
+    const [deletedId, setDeletedId] = useState()
+    const [open, setOpen] = useState(false);
     const { user } = useSelector((store) => store.userStore);
     const [loading, setLoading] = useState(false);
     const [userList, setUserList] = useState([]);
@@ -49,6 +56,15 @@ const UserDashboard = () => {
 
         deleteUsers();
         window.location.reload()
+    };
+
+    const handleClickOpen = (id) => {
+        setDeletedId(id)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
     };
 
     const Loading = () => {
@@ -107,7 +123,7 @@ const UserDashboard = () => {
 
                                 <TableCell>
                                     <Button
-                                        onClick={() => deleteUser(user._id)}
+                                        onClick={() => handleClickOpen(user._id)}
                                         type="submit"
                                         fullWidth
                                         variant="contained"
@@ -124,6 +140,26 @@ const UserDashboard = () => {
                         ))}
                     </TableBody>
                 </Table>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                // TransitionComponent={Transition}
+                >
+                    <DialogTitle>{"Remove User?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure to delete this user?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => deleteUser(deletedId)}>Yes</Button>
+                        <Button onClick={handleClose} autoFocus>
+                            No
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         );
     };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector,  } from "react-redux";
+import { useSelector, } from "react-redux";
 
 import {
     TextField,
@@ -7,16 +7,21 @@ import {
     Grid,
     Paper,
     Typography,
-
     Button,
+    Box,
+    InputLabel,
+    MenuItem,
+    FormControl, Select
 
 } from "@mui/material";
 
 import { useParams, useNavigate } from "react-router-dom";
-import { BASE_URL } from "../../../utils/api";
+import { BASE_URL, categoriesList } from "../../../utils/api";
 
 
 const EditProduct = () => {
+    const [categoryList, setCategoryList] = useState([])
+    const [categoryDropdown, setCategoryDropdown] = useState('')
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [price, setPrice] = useState("");
@@ -46,6 +51,12 @@ const EditProduct = () => {
                 console.log(error);
             }
         };
+        const getCategories = async () => {
+            const v = await categoriesList()
+            setCategoryList(v)
+        }
+
+        getCategories()
 
         getProducts();
     }, [
@@ -57,6 +68,13 @@ const EditProduct = () => {
         product.title,
         product.image,
     ]);
+
+    const handleChange = (event) => {
+        // console.log(event.target)
+        setCategory(event.target.value)
+        setCategoryDropdown(event.target.value);
+
+    };
 
     const handleImage = async (e) => {
         try {
@@ -110,7 +128,7 @@ const EditProduct = () => {
 
             await fetch(`${BASE_URL}/products/${id}`, requestOptions)
                 .then((res) => res.json())
-                // .then((res) => console.log(res));
+            // .then((res) => console.log(res));
         };
 
         editProducts(title, category, price, description, stock, user);
@@ -146,6 +164,27 @@ const EditProduct = () => {
                             onChange={(e) => setTitle(e.target.value)}
                             size="small"
                         />
+
+                        <Box sx={{ minWidth: 120, mb: 3 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label">Category List</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={categoryDropdown ? categoryDropdown : ""}
+                                    label="Category List"
+                                    onChange={handleChange}
+                                >
+                                    {
+                                        categoryList.map((category) => {
+                                            return <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
+                                        })
+                                    }
+
+                                </Select>
+                            </FormControl>
+                        </Box>
+
                         <TextField
                             sx={{
                                 mb: 3,

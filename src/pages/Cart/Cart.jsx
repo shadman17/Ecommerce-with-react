@@ -14,7 +14,6 @@ const Cart = () => {
     useEffect(() => {
         const getCartItems = async () => {
             const response = await getCart(user);
-            console.log(response);
             setItems(response);
         };
 
@@ -44,8 +43,7 @@ const Cart = () => {
             }),
         };
         await fetch(`${BASE_URL}/cart`, requestOptions)
-            .then(res=>res.json())
-            .then(res=>console.log(res));               
+           
         
     };
 
@@ -86,8 +84,7 @@ const Cart = () => {
             }),
         };
         await fetch(`${BASE_URL}/cart`, requestOptions)
-            .then(res=>res.json())
-            .then(res=>console.log(res));   
+
     };
 
     const Loading = () => {
@@ -114,16 +111,16 @@ const Cart = () => {
                                 return (
                                     <div
                                         className="px-4 my-5 bg-light rounded-3"
-                                        key={cartItem.productId._id}
+                                        key={cartItem?.productId?._id}
                                     >
                                         <div className="container py-4">
                                             <div className="row justify-content-center">
                                                 <div className="col-md-4">
                                                     <img
-                                                        src={`${BASE_URL}${cartItem.productId.image}`}
+                                                        src={`${BASE_URL}${cartItem?.productId?.image}`}
                                                         alt={
-                                                            cartItem.productId
-                                                                .title
+                                                            cartItem?.productId
+                                                                ?.title
                                                         }
                                                         height="100px"
                                                         width="80px"
@@ -131,13 +128,13 @@ const Cart = () => {
                                                 </div>
                                                 <div className="col-md-4">
                                                     <h5>
-                                                        {cartItem.productId.title.slice(
+                                                        {cartItem?.productId?.title.slice(
                                                             0,
                                                             20
                                                         ) + "....."}
                                                     </h5>
                                                     <p className="lead fw-bold">
-                                                        {`${cartItem.quantity} x $${cartItem.productId.price} `}
+                                                        {`${cartItem.quantity} x $${cartItem?.productId?.price} `}
                                                     </p>
                                                 </div>
                                                 <div className="col-md-4">
